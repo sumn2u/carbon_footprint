@@ -1,0 +1,28 @@
+{
+  "name": "carbon_footprint",
+  "version": "1.0.0",
+  "description": "calculates carbon footprint usage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumn2u/carbon_footprint.git"
+  },
+  "keywords": [
+    "carbon",
+    "footprints",
+    "carbon",
+    "certificates"
+  ],
+  "author": "Suman Kunwar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sumn2u/carbon_footprint/issues"
+  },
+  "homepage": "https://github.com/sumn2u/carbon_footprint#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

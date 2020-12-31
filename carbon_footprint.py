@@ -54,6 +54,7 @@ import requests, time, random, webbrowser, datetime, platform, sys, pygame, shut
 import ftplib, getpass, os, json, pyaudio, wave, smtplib, random, socket
 import speech_recognition as sr_audio
 from bs4 import BeautifulSoup
+import sys
 import pyttsx3 as pyttsx
 import os, re, matplotlib
 from reportlab.pdfgen import canvas
@@ -484,9 +485,9 @@ def make_bar_pdf(pdfname, logo):
     #powered by.. for branding 
     c.setFont('Helvetica-Bold', 12, leading=None)
     c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 30, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 12, leading=None)
-    c.drawCentredString(300,50,"http://www.protea.earth")
+    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    c.setFont('Helvetica', 10, leading=None)
+    c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
     c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
@@ -509,9 +510,9 @@ def make_bar_2_pdf(pdfname, logo, footprint_delta):
     #powered by.. for branding 
     c.setFont('Helvetica-Bold', 12, leading=None)
     c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 30, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 12, leading=None)
-    c.drawCentredString(300,50,"http://www.protea.earth")
+    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    c.setFont('Helvetica', 10, leading=None)
+    c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
     c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
@@ -526,9 +527,9 @@ def make_pie_pdf(pdfname):
     #powered by.. for branding 
     c.setFont('Helvetica-Bold', 12, leading=None)
     c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 30, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 12, leading=None)
-    c.drawCentredString(300,50,"http://www.protea.earth")
+    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    c.setFont('Helvetica', 10, leading=None)
+    c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
     c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
@@ -554,9 +555,9 @@ def make_getinvolved(pdfname):
     #powered by.. for branding 
     c.setFont('Helvetica-Bold', 12, leading=None)
     c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 30, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 12, leading=None)
-    c.drawCentredString(300,50,"http://www.protea.earth")
+    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    c.setFont('Helvetica', 10, leading=None)
+    c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
     c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
@@ -629,9 +630,9 @@ def improvement_pdf(pdfname, truthlist):
     #powered by.. for branding 
     c.setFont('Helvetica-Bold', 12, leading=None)
     c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 30, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 12, leading=None)
-    c.drawCentredString(300,50,"http://www.protea.earth")
+    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    c.setFont('Helvetica', 10, leading=None)
+    c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
     c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
@@ -642,65 +643,66 @@ def improvement_pdf(pdfname, truthlist):
 ##                            MAIN SCRIPT                                   ##
 ##############################################################################
 
-print('please type answers to the following questions below')
-email=input('what is your email? \n')
-# example = 2 
-answer_1 = input('How many people are in your household? (e.g. 2) \n')
-answer_1=clean_answer(answer_1)
-# example = 50 
-answer_2 = input('What is your electric bill (in dollars) monthly?  (e.g. 50) \n')
-answer_2=clean_answer(answer_2)
-# example = 5 
-answer_3 = input('How many flights do you take per year? (e.g. 10) \n')
-answer_3=clean_answer(answer_3)
-# example = no 
-answer_4 = input('Do you own a car? (e.g. n | y) \n')
-answer_4=clean_answer(answer_4)
-# example = 1 
-answer_5 = input('What is your average distance to commute to/from work in miles - for example 21? (e.g. 10) \n')
-answer_5=clean_answer(answer_5)
-# example = yes
-answer_6= input('Do you use public transportation? (e.g. y)\n')
-answer_6=clean_answer(answer_6)
-# example = yes 
-answer_7 = input('Do you use uber or another ride sharing platform like Lyft? (e.g. y) \n')
-answer_7=clean_answer(answer_7)
+# print('please type answers to the following questions below')
+# email=input('what is your email? \n')
+# # example = 2 
+# answer_1 = input('How many people are in your household? (e.g. 2) \n')
+# answer_1=clean_answer(answer_1)
+# # example = 50 
+# answer_2 = input('What is your electric bill (in dollars) monthly?  (e.g. 50) \n')
+# answer_2=clean_answer(answer_2)
+# # example = 5 
+# answer_3 = input('How many flights do you take per year? (e.g. 10) \n')
+# answer_3=clean_answer(answer_3)
+# # example = no 
+# answer_4 = input('Do you own a car? (e.g. n | y) \n')
+# answer_4=clean_answer(answer_4)
+# # example = 1 
+# answer_5 = input('What is your average distance to commute to/from work in miles - for example 21? (e.g. 10) \n')
+# answer_5=clean_answer(answer_5)
+# # example = yes
+# answer_6= input('Do you use public transportation? (e.g. y)\n')
+# answer_6=clean_answer(answer_6)
+# # example = yes 
+# answer_7 = input('Do you use uber or another ride sharing platform like Lyft? (e.g. y) \n')
+# answer_7=clean_answer(answer_7)
 
-if answer_7 == 'yes':
-    # example = 5
-    answer_8 = input("How many ride-sharing trips do you complete per month? (e.g. 10) \n")
-    answer_8=clean_answer(answer_8)
-else:
-    answer_8 = '0'
+# if answer_7 == 'yes':
+#     # example = 5
+#     answer_8 = input("How many ride-sharing trips do you complete per month? (e.g. 10) \n")
+#     answer_8=clean_answer(answer_8)
+# else:
+#     answer_8 = '0'
 
-# example = yes
-answer_9 = input('Are you a vegetarian? (e.g. n) \n')
-answer_9=clean_answer(answer_9)
-# example = no
-answer_10= input('Do you eat meat more than 3 times each week? (e.g. y) \n')
-answer_10=clean_answer(answer_10)
-# example = 50
-answer_11 = input('How much money do you spend on Amazon per month in US dollars - for example, fifty dollars? (e.g. 150) \n')
-answer_11=clean_answer(answer_11)
+# # example = yes
+# answer_9 = input('Are you a vegetarian? (e.g. n) \n')
+# answer_9=clean_answer(answer_9)
+# # example = no
+# answer_10= input('Do you eat meat more than 3 times each week? (e.g. y) \n')
+# answer_10=clean_answer(answer_10)
+# # example = 50
+# answer_11 = input('How much money do you spend on Amazon per month in US dollars - for example, fifty dollars? (e.g. 150) \n')
+# answer_11=clean_answer(answer_11)
 
-answers=[answer_1, answer_2, answer_3, answer_4, answer_5,
-         answer_6, answer_7, answer_8, answer_9, answer_10, answer_11]
+# answers=[answer_1, answer_2, answer_3, answer_4, answer_5,
+#          answer_6, answer_7, answer_8, answer_9, answer_10, answer_11]
 
+print(sys.argv, sys.argv[1],'likkk')
 # -----------------
 # FOR TESTING ONLY 
-# email='js@neurolex.co'
-# answers=['2', '50', '5', 'no', '1', 'yes', 'yes', '5', 'no', 'yes', '50']
-# answer_1='2'
-# answer_2='50'
-# answer_3='5'
-# answer_4='no'
-# answer_5='1'
-# answer_6='yes'
-# answer_7='yes'
-# answer_8='5'
-# answer_9='no'
-# answer_10='yes'
-# answer_11='50'
+email= sys.argv[1]
+answers= sys.argv[2].split(',')
+answer_1= answers[0]
+answer_2= answers[1]
+answer_3= answers[2]
+answer_4= answers[3]
+answer_5= answers[4]
+answer_6= answers[5]
+answer_7= answers[6]
+answer_8= answers[7]
+answer_9= answers[8]
+answer_10= answers[9]
+answer_11= answers[10]
 # -----------------
 
 ## report on recommendations pop up + saved in directory
@@ -717,7 +719,7 @@ data = {'email': email,
         'labels_footprintbytype': labels_footprintbytype}
 
 print(data)
-
+print('making pdf')
 # compared to averages 
 # footprint_avg = 14642.40 kg Co2/year 
 # footprintbytype_avg = [7252.76, 602.45, 4,4515.27, 2267.96]

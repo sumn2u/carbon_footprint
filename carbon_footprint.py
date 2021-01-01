@@ -59,6 +59,7 @@ import pyttsx3 as pyttsx
 import os, re, matplotlib
 from reportlab.pdfgen import canvas
 from reportlab.lib import utils
+from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.pagesizes import landscape, portrait
 from reportlab.platypus import Image
@@ -70,6 +71,8 @@ from textblob import TextBlob
 from PyPDF2 import PdfFileMerger, PdfFileReader
 import numpy as np 
 from os.path import basename
+import os.path
+from reportlab.lib.units import inch
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
@@ -338,20 +341,22 @@ def delete_pdfs():
             os.remove(listdir[i])
 def cover_page(pdfname, surveyname, company, date, sampleid):
     c=canvas.Canvas(pdfname, pagesize=portrait(letter))
-
-    logo='logo.png'
-    c.drawImage(logo, 200, 500, width=200,height=100, preserveAspectRatio=True)
+    logo = os.path.join(os.path.dirname(os.path.abspath(__file__)), '1.png')
+    # logo = ImageReader('https://www.google.com/images/srpr/logo11w.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo,0,0, width=page_width, height=page_height)
+    
 
     c.setFont('Helvetica-Bold', 16, leading=None)
-    c.drawCentredString(300,460,"Carbon footprint report")
+    # c.drawCentredString(300,460,"Carbon Footprint Report")
     c.setFont('Helvetica', 16, leading=None)
-    c.drawCentredString(300,430,"%s"%(surveyname))
-    c.drawCentredString(300,400,"%s"%(date[0:10]))
+    c.drawCentredString(300,330,"%s"%(surveyname))
+    c.drawCentredString(300,300,"%s"%(date[0:10]))
 
     # get .PNG from GDRIVE for text
-    c.drawImage('cover_text.png', 50,200,width=510,height=200,preserveAspectRatio=True)
-    #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    # c.drawImage('cover_text.png', 50,200,width=510,height=200,preserveAspectRatio=True)
+    # wave looking thing on front page
+    # c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
     c.save()
 
     return pdfname
@@ -362,7 +367,7 @@ def combine_pdfs():
 def make_graphs(individual_means, individual_means_2):
 
     # bar graph compared to average in each category (2 phase bar graph)
-    labels = ['Electricity consumption (kwh * 1000)', '# of flights per year', '# commute miles per year (thousands)', '# of uber trips per year', 'food choice (tons of CO2 emissions/year)']
+    labels = ['Electricity consumption (kwh * 1000)', '# of flights per year', '# commute miles per year (thousands)', '# of ride sharing trips per year', 'food choice (tons of CO2 emissions/year)']
     population_means = [11.698, 2.1, 15, 7.86, 2.5]
     population_means=list(map(int,population_means))
 
@@ -480,61 +485,98 @@ def make_bar_pdf(pdfname, logo):
 
     c=canvas.Canvas(pdfname, pagesize=portrait(letter))
     c.setFont('Helvetica-Bold', 16, leading=None)
-    c.drawCentredString(300,600,"Your carbon consumption relative to the average American (units)")
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '2.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
+    
+    # c.drawCentredString(300,600,"Your carbon consumption relative to the average American (units)")
     c.drawImage(logo, 0, 200, width=600,height=300, preserveAspectRatio=True)
     #powered by.. for branding 
-    c.setFont('Helvetica-Bold', 12, leading=None)
-    c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 10, leading=None)
-    c.drawCentredString(300,40,"https://momsstorenepal.com")
+    # c.setFont('Helvetica-Bold', 12, leading=None)
+    # c.drawCentredString(300,100,"Powered by:")
+    # c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    # c.setFont('Helvetica', 10, leading=None)
+    # c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    #c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
     c.save()
 
 def make_bar_2_pdf(pdfname, logo, footprint_delta):
 
     c=canvas.Canvas(pdfname, pagesize=portrait(letter))
-    c.setFont('Helvetica-Bold', 16, leading=None)
-    c.drawCentredString(300,600,"Your carbon consumption relative to the average American (kg CO2)")
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '3.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
+    # c.setFont('Helvetica-Bold', 16, leading=None)
+    # c.drawCentredString(300,600,"Your carbon consumption relative to the average American (kg CO2)")
     c.drawImage(logo, 0, 250, width=600,height=300, preserveAspectRatio=True)
 
     # now draw the delta 
     c.setFont('Helvetica', 11, leading=None)
     if float(footprint_delta) <= 0:
-        c.drawCentredString(300, 200, "Your carbon consumption is %s kg CO2 less than the average American."%(footprint_delta))
+        c.drawCentredString(300, 200, "Your carbon consumption is %s kg CO2 less than the average Nepali."%(footprint_delta))
     else:
-        c.drawCentredString(300, 200, "Your carbon consumption is %s kg CO2 over the average American."%(footprint_delta))
+        c.drawCentredString(300, 200, "Your carbon consumption is %s kg CO2 over the average Nepali."%(footprint_delta))
 
     #powered by.. for branding 
-    c.setFont('Helvetica-Bold', 12, leading=None)
-    c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 10, leading=None)
-    c.drawCentredString(300,40,"https://momsstorenepal.com")
+    # c.setFont('Helvetica-Bold', 12, leading=None)
+    # c.drawCentredString(300,100,"Powered by:")
+    # c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    # c.setFont('Helvetica', 10, leading=None)
+    # c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    #c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
     c.save()
 
 def make_pie_pdf(pdfname):
     c=canvas.Canvas(pdfname, pagesize=portrait(letter))
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '4.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
     logo='pi.png'
-    c.setFont('Helvetica-Bold', 16, leading=None)
-    c.drawCentredString(300,600,"Your carbon consumption: by category")
+    # c.setFont('Helvetica-Bold', 16, leading=None)
+    # c.drawCentredString(300,600,"Your carbon consumption: by category")
     c.drawImage(logo, 0, 200, width=600,height=300, preserveAspectRatio=True)
     #powered by.. for branding 
-    c.setFont('Helvetica-Bold', 12, leading=None)
-    c.drawCentredString(300,100,"Powered by:")
-    c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
-    c.setFont('Helvetica', 10, leading=None)
-    c.drawCentredString(300,40,"https://momsstorenepal.com")
+    # c.setFont('Helvetica-Bold', 12, leading=None)
+    # c.drawCentredString(300,100,"Powered by:")
+    # c.drawImage('logo.png', 250, 20, width=100,height=100, preserveAspectRatio=True)
+    # c.setFont('Helvetica', 10, leading=None)
+    # c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    #c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
     c.save()
 
+def make_fifth_pdf(pdfname):
+    c=canvas.Canvas(pdfname, pagesize=portrait(letter))
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '5.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
+    c.save()
+
+def make_sixth_pdf(pdfname):
+    c=canvas.Canvas(pdfname, pagesize=portrait(letter))
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '6.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
+    c.save()
+
+def make_seventh_pdf(pdfname):
+    c=canvas.Canvas(pdfname, pagesize=portrait(letter))
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '7.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
+    c.save()
+
+def make_eigth_pdf(pdfname):
+    c=canvas.Canvas(pdfname, pagesize=portrait(letter))
+    logo2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), '8.png')
+    page_width, page_height = c._pagesize
+    c.drawImage(logo2,0,0, width=page_width, height=page_height)
+    c.save()
 
 def make_getinvolved(pdfname):
     c=canvas.Canvas(pdfname, pagesize=portrait(letter))
@@ -560,7 +602,7 @@ def make_getinvolved(pdfname):
     c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    #c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
     c.save()    
 
 
@@ -570,7 +612,7 @@ def make_lastpage(pdfname):
     c.drawImage('protea_signup.png', 100, 200, width=400,height=400, preserveAspectRatio=True)
 
     #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    #c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
     c.save()    
 
 def merge_pdfs():
@@ -635,7 +677,7 @@ def improvement_pdf(pdfname, truthlist):
     c.drawCentredString(300,40,"https://momsstorenepal.com")
 
     #wave looking thing on front page
-    c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
+    #c.drawImage('footer.png', -100,-35,width=800,height=100,preserveAspectRatio=True)
 
     c.save()
 
@@ -684,10 +726,10 @@ def improvement_pdf(pdfname, truthlist):
 # answer_11 = input('How much money do you spend on Amazon per month in US dollars - for example, fifty dollars? (e.g. 150) \n')
 # answer_11=clean_answer(answer_11)
 
-# answers=[answer_1, answer_2, answer_3, answer_4, answer_5,
-#          answer_6, answer_7, answer_8, answer_9, answer_10, answer_11]
+#  answers=[answer_1, answer_2, answer_3, answer_4, answer_5,
+        # answer_6, answer_7, answer_8, answer_9, answer_10, answer_11]
 
-print(sys.argv, sys.argv[1],'likkk')
+# print(sys.argv, sys.argv[1],'likkk')
 # -----------------
 # FOR TESTING ONLY 
 email= sys.argv[1]
@@ -772,10 +814,17 @@ make_graphs(individual_means, footprintbytype)
 make_bar_pdf('2.pdf', 'bar.png')
 make_bar_2_pdf('3.pdf', 'bar_2.png', str(footprint_delta))
 make_pie_pdf('4.pdf')
-improvement_pdf('5.pdf', truthlist)
-make_getinvolved('6.pdf')
-shutil.copy(curdir+'/assets/7.pdf', os.getcwd()+'/7.pdf')
-make_lastpage('8.pdf')
+# improvement_pdf('5.pdf', truthlist)
+# make_getinvolved('6.pdf')
+make_fifth_pdf('5.pdf')
+make_sixth_pdf('6.pdf')
+make_seventh_pdf('7.pdf')
+make_eigth_pdf('8.pdf')
+# shutil.copy(curdir+'/assets/5.pdf', os.getcwd()+'/5.pdf')
+# shutil.copy(curdir+'/assets/6.pdf', os.getcwd()+'/6.pdf')
+# shutil.copy(curdir+'/assets/7.pdf', os.getcwd()+'/7.pdf')
+# shutil.copy(curdir+'/assets/8.pdf', os.getcwd()+'/8.pdf')
+# make_lastpage('8.pdf')
 merge_pdfs()
 filename='footprint_report.pdf'
 os.rename('merged.pdf', filename)

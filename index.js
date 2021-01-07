@@ -29,7 +29,10 @@ app.post('/calculate_carbon_usage', (req, res) => {
  console.log(`child process close all stdio with code ${code}`);
  // send data to browser
   // res.send({})
- res.download(`${__dirname}/tempdir/footprint_report.pdf`)
+  setTimeout(function(){
+    res.download(`${__dirname}/tempdir/footprint_report.pdf`)
+  },100)
+ 
  });
  
 })
